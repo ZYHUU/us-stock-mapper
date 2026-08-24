@@ -1,0 +1,171 @@
+platform,contract_symbol,base_asset,quote_asset,asset_type,market,exchange,ticker,canonical_code,name_en,name_cn,mapper_candidate,underlying_type,status,onboard_date,active,source_url
+binance_futures,CXMTUSDT,CXMT,USDT,stock,CN,SSE,688825,SSE:688825,CXMT Corporation,长鑫科技,1,CN_EQUITY,TRADING,2026-08-18T05:00:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,UNITREEUSDT,UNITREE,USDT,stock,CN,SSE,688836,SSE:688836,Unitree Robotics,宇树科技,1,CN_EQUITY,TRADING,2026-08-19T02:45:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,BZUSDT,BZ,USDT,commodity,GLOBAL,COMMODITY,BZ,COMMODITY:BZ,Brent Crude Oil,布伦特原油,0,COMMODITY,TRADING,2026-04-01T09:10:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,CLUSDT,CL,USDT,commodity,GLOBAL,COMMODITY,CL,COMMODITY:CL,WTI Crude Oil,WTI原油,0,COMMODITY,TRADING,2026-04-01T09:00:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,COPPERUSDT,COPPER,USDT,commodity,GLOBAL,COMMODITY,COPPER,COMMODITY:COPPER,Copper,铜,0,COMMODITY,TRADING,2026-03-06T09:00:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,NATGASUSDT,NATGAS,USDT,commodity,GLOBAL,COMMODITY,NATGAS,COMMODITY:NATGAS,Natural Gas,天然气,0,COMMODITY,TRADING,2026-04-01T09:20:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,XAGUSDT,XAG,USDT,commodity,GLOBAL,COMMODITY,XAG,COMMODITY:XAG,Silver,白银,0,COMMODITY,TRADING,2026-01-07T10:00:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,XAUUSDT,XAU,USDT,commodity,GLOBAL,COMMODITY,XAU,COMMODITY:XAU,Gold,黄金,0,COMMODITY,TRADING,2025-12-11T08:05:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,XPDUSDT,XPD,USDT,commodity,GLOBAL,COMMODITY,XPD,COMMODITY:XPD,Palladium,钯金,0,COMMODITY,TRADING,2026-01-30T10:15:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,XPTUSDT,XPT,USDT,commodity,GLOBAL,COMMODITY,XPT,COMMODITY:XPT,Platinum,铂金,0,COMMODITY,TRADING,2026-01-30T10:00:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,CSOPSAMSUNG2LUSDT,CSOPSAMSUNG2L,USDT,etf,HK,HKEX,CSOPSAMSUNG2L,HKEX:CSOPSAMSUNG2L,CSOP Samsung 2x Leveraged Product,南方东英三星两倍杠杆产品,0,HK_EQUITY,TRADING,2026-08-11T02:15:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,CSOPSKHYNIX2LUSDT,CSOPSKHYNIX2L,USDT,etf,HK,HKEX,CSOPSKHYNIX2L,HKEX:CSOPSKHYNIX2L,CSOP SK Hynix 2x Leveraged Product,南方东英SK海力士两倍杠杆产品,0,HK_EQUITY,TRADING,2026-08-11T02:10:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,GIGADEVUSDT,GIGADEV,USDT,stock,HK,HKEX,3986,HKEX:3986,GigaDevice Semiconductor,兆易创新,1,HK_EQUITY,TRADING,2026-08-03T05:30:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,HK0700USDT,HK0700,USDT,stock,HK,HKEX,0700,HKEX:0700,Tencent Holdings,腾讯控股,1,HK_EQUITY,TRADING,2026-07-22T03:00:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,HK1810USDT,HK1810,USDT,stock,HK,HKEX,1810,HKEX:1810,Xiaomi Corporation,小米集团,1,HK_EQUITY,TRADING,2026-07-22T03:05:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,KUAISHOUUSDT,KUAISHOU,USDT,stock,HK,HKEX,1024,HKEX:1024,Kuaishou Technology,快手,1,HK_EQUITY,TRADING,2026-08-11T02:00:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,MEITUANUSDT,MEITUAN,USDT,stock,HK,HKEX,3690,HKEX:3690,Meituan,美团,1,HK_EQUITY,TRADING,2026-08-11T02:05:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,MINIMAXUSDT,MINIMAX,USDT,stock,HK,HKEX,0100,HKEX:0100,MiniMax Group Inc.,MiniMax,1,HK_EQUITY,TRADING,2026-07-17T03:00:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,POPMARTUSDT,POPMART,USDT,stock,HK,HKEX,9992,HKEX:9992,Pop Mart International,泡泡玛特,1,HK_EQUITY,TRADING,2026-07-23T02:30:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,TENCENTUSDT,TENCENT,USDT,stock,HK,HKEX,0700,HKEX:0700,Tencent Holdings,腾讯控股,1,HK_EQUITY,TRADING,2026-07-22T03:10:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,ZHIPUUSDT,ZHIPU,USDT,stock,HK,HKEX,2513,HKEX:2513,Zhipu AI,智谱,1,HK_EQUITY,TRADING,2026-07-17T03:05:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,ZHONGJIUSDT,ZHONGJI,USDT,stock,HK,HKEX,3308,HKEX:3308,Zhongji Innolight,中际旭创,1,HK_EQUITY,TRADING,2026-08-14T02:00:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,KODEX200USDT,KODEX200,USDT,etf,KR,KRX,069500,KRX:069500,KODEX 200 ETF,KODEX 200 ETF,0,KR_EQUITY,TRADING,2026-08-14T02:25:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,HANMIUSDT,HANMI,USDT,stock,KR,KRX,042700,KRX:042700,Hanmi Semiconductor,韩美半导体,0,KR_EQUITY,TRADING,2026-08-14T02:10:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,HYUNDAIUSDT,HYUNDAI,USDT,stock,KR,KRX,005380,KRX:005380,Hyundai Motor,现代汽车,0,KR_EQUITY,TRADING,2026-06-02T03:20:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,LGELECTRONICSUSDT,LGELECTRONICS,USDT,stock,KR,KRX,066570,KRX:066570,LG Electronics,LG电子,0,KR_EQUITY,TRADING,2026-08-14T02:15:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,NAVERUSDT,NAVER,USDT,stock,KR,KRX,035420,KRX:035420,NAVER Corporation,NAVER,0,KR_EQUITY,TRADING,2026-08-14T02:20:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,SAMSUNGEMUSDT,SAMSUNGEM,USDT,stock,KR,KRX,009150,KRX:009150,Samsung Electro-Mechanics,三星电机,0,KR_EQUITY,TRADING,2026-08-14T02:05:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,SAMSUNGUSDT,SAMSUNG,USDT,stock,KR,KRX,005930,KRX:005930,Samsung Electronics,三星电子,0,KR_EQUITY,TRADING,2026-06-02T03:10:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,SKHYNIXUSDT,SKHYNIX,USDT,stock,KR,KRX,000660,KRX:000660,SK hynix Inc.,SK海力士,0,KR_EQUITY,TRADING,2026-06-02T03:00:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,ANTHROPICUSDT,ANTHROPIC,USDT,private_company,PRIVATE,PRIVATE,ANTHROPIC,PRIVATE:ANTHROPIC,Anthropic,Anthropic,0,PREMARKET,TRADING,2026-06-02T04:30:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,OPENAIUSDT,OPENAI,USDT,private_company,PRIVATE,PRIVATE,OPENAI,PRIVATE:OPENAI,OpenAI,OpenAI,0,PREMARKET,TRADING,2026-05-26T08:30:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,BITOUSDT,BITO,USDT,etf,US,US,BITO,US:BITO,ProShares Bitcoin Strategy ETF,,0,EQUITY,TRADING,2026-07-27T13:40:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,DRAMUSDT,DRAM,USDT,etf,US,US,DRAM,US:DRAM,Roundhill Memory ETF,,0,EQUITY,TRADING,2026-05-18T14:00:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,EWJUSDT,EWJ,USDT,etf,US,US,EWJ,US:EWJ,iShares MSCI Japan ETF,,0,EQUITY,TRADING,2026-03-19T13:30:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,EWTUSDT,EWT,USDT,etf,US,US,EWT,US:EWT,iShares MSCI Taiwan ETF,,0,EQUITY,TRADING,2026-06-01T13:50:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,EWYUSDT,EWY,USDT,etf,US,US,EWY,US:EWY,iShares MSCI South Korea ETF,,0,EQUITY,TRADING,2026-03-16T13:30:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,EWZUSDT,EWZ,USDT,etf,US,US,EWZ,US:EWZ,iShares MSCI Brazil ETF,,0,EQUITY,TRADING,2026-06-10T09:25:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,GDXUSDT,GDX,USDT,etf,US,US,GDX,US:GDX,VanEck Gold Miners ETF,,0,EQUITY,TRADING,2026-08-17T13:30:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,INTWUSDT,INTW,USDT,etf,US,US,INTW,US:INTW,GraniteShares 2x Long INTC Daily ETF,,0,EQUITY,TRADING,2026-07-09T14:10:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,IWMUSDT,IWM,USDT,etf,US,US,IWM,US:IWM,iShares Russell 2000 ETF,,0,EQUITY,TRADING,2026-06-08T09:30:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,KORUUSDT,KORU,USDT,etf,US,US,KORU,US:KORU,Direxion Daily South Korea Bull 3X Shares,,0,EQUITY,TRADING,2026-06-22T13:55:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,KSTRUSDT,KSTR,USDT,etf,US,US,KSTR,US:KSTR,KraneShares SSE STAR Market 50 Index ETF,,0,EQUITY,TRADING,2026-07-02T09:45:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,LYTEUSDT,LYTE,USDT,etf,US,US,LYTE,US:LYTE,Roundhill Photonics & Optics ETF,,0,EQUITY,TRADING,2026-08-17T13:50:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,MUUUSDT,MUU,USDT,etf,US,US,MUU,US:MUU,Direxion Daily MU Bull 2X Shares,,0,EQUITY,TRADING,2026-07-16T09:00:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,MVLLUSDT,MVLL,USDT,etf,US,US,MVLL,US:MVLL,GraniteShares 2x Long MRVL Daily ETF,,0,EQUITY,TRADING,2026-06-29T13:35:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,QQQUSDT,QQQ,USDT,etf,US,US,QQQ,US:QQQ,Invesco QQQ Trust,,0,EQUITY,TRADING,2026-04-06T13:30:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,SMHUSDT,SMH,USDT,etf,US,US,SMH,US:SMH,VanEck Semiconductor ETF,,0,EQUITY,TRADING,2026-07-29T09:10:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,SNXXUSDT,SNXX,USDT,etf,US,US,SNXX,US:SNXX,Xtrackers US National Critical Technologies ETF,,0,EQUITY,TRADING,2026-07-09T14:15:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,SOXLUSDT,SOXL,USDT,etf,US,US,SOXL,US:SOXL,Direxion Daily Semiconductor Bull 3X Shares,,0,EQUITY,TRADING,2026-05-15T14:00:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,SOXSUSDT,SOXS,USDT,etf,US,US,SOXS,US:SOXS,Direxion Daily Semiconductor Bear 3X Shares,,0,EQUITY,TRADING,2026-07-16T09:05:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,SPYUSDT,SPY,USDT,etf,US,US,SPY,US:SPY,SPDR S&P 500 ETF Trust,,0,EQUITY,TRADING,2026-04-06T13:40:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,SQQQUSDT,SQQQ,USDT,etf,US,US,SQQQ,US:SQQQ,ProShares UltraPro Short QQQ,,0,EQUITY,TRADING,2026-06-29T13:45:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,STXXUSDT,STXX,USDT,etf,US,US,STXX,US:STXX,Tradr 2X Long STX Daily ETF,,0,EQUITY,TRADING,2026-06-11T09:35:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,TBTUSDT,TBT,USDT,etf,US,US,TBT,US:TBT,ProShares UltraShort 20+ Year Treasury,,0,EQUITY,TRADING,2026-07-27T13:35:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,TMFUSDT,TMF,USDT,etf,US,US,TMF,US:TMF,Direxion Daily 20+ Year Treasury Bull 3X Shares,,0,EQUITY,TRADING,2026-07-27T13:30:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,TQQQUSDT,TQQQ,USDT,etf,US,US,TQQQ,US:TQQQ,ProShares UltraPro QQQ,,0,EQUITY,TRADING,2026-06-29T13:40:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,TZAUSDT,TZA,USDT,etf,US,US,TZA,US:TZA,Direxion Daily Small Cap Bear 3X Shares,,0,EQUITY,TRADING,2026-07-16T09:10:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,URNMUSDT,URNM,USDT,etf,US,US,URNM,US:URNM,Sprott Uranium Miners ETF,,0,EQUITY,TRADING,2026-06-09T09:10:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,UVXYUSDT,UVXY,USDT,etf,US,US,UVXY,US:UVXY,ProShares Ultra VIX Short-Term Futures ETF,,0,EQUITY,TRADING,2026-06-11T09:20:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,XBIUSDT,XBI,USDT,etf,US,US,XBI,US:XBI,SPDR S&P Biotech ETF,,0,EQUITY,TRADING,2026-07-09T14:20:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,XLEUSDT,XLE,USDT,etf,US,US,XLE,US:XLE,Energy Select Sector SPDR Fund,,0,EQUITY,TRADING,2026-06-10T09:20:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,AAOIUSDT,AAOI,USDT,stock,US,NASDAQ,AAOI,NASDAQ:AAOI,"APPLIED OPTOELECTRONICS, INC.",,1,EQUITY,TRADING,2026-06-08T09:25:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,AAPLUSDT,AAPL,USDT,stock,US,NASDAQ,AAPL,NASDAQ:AAPL,Apple Inc.,,1,EQUITY,TRADING,2026-04-06T13:50:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,ADBEUSDT,ADBE,USDT,stock,US,NASDAQ,ADBE,NASDAQ:ADBE,ADOBE INC.,,1,EQUITY,TRADING,2026-06-11T09:25:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,ALABUSDT,ALAB,USDT,stock,US,NASDAQ,ALAB,NASDAQ:ALAB,"Astera Labs, Inc.",,1,EQUITY,TRADING,2026-06-22T13:40:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,AMATUSDT,AMAT,USDT,stock,US,NASDAQ,AMAT,NASDAQ:AMAT,APPLIED MATERIALS INC /DE,,1,EQUITY,TRADING,2026-06-08T09:10:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,AMDUSDT,AMD,USDT,stock,US,NASDAQ,AMD,NASDAQ:AMD,ADVANCED MICRO DEVICES INC,,1,EQUITY,TRADING,2026-05-06T13:30:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,AMZNUSDT,AMZN,USDT,stock,US,NASDAQ,AMZN,NASDAQ:AMZN,AMAZON COM INC,,1,EQUITY,TRADING,2026-02-09T14:40:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,APPUSDT,APP,USDT,stock,US,NASDAQ,APP,NASDAQ:APP,AppLovin Corp,,1,EQUITY,TRADING,2026-07-10T08:45:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,ARMUSDT,ARM,USDT,stock,US,NASDAQ,ARM,NASDAQ:ARM,ARM HOLDINGS PLC /UK,,1,EQUITY,TRADING,2026-05-26T13:40:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,ASMLUSDT,ASML,USDT,stock,US,NASDAQ,ASML,NASDAQ:ASML,ASML HOLDING NV,,1,EQUITY,TRADING,2026-06-11T09:40:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,ASTSUSDT,ASTS,USDT,stock,US,NASDAQ,ASTS,NASDAQ:ASTS,"AST SpaceMobile, Inc.",,1,EQUITY,TRADING,2026-06-01T13:55:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,AVGOUSDT,AVGO,USDT,stock,US,NASDAQ,AVGO,NASDAQ:AVGO,Broadcom Inc.,,1,EQUITY,TRADING,2026-04-20T13:40:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,AXTIUSDT,AXTI,USDT,stock,US,NASDAQ,AXTI,NASDAQ:AXTI,AXT INC,,1,EQUITY,TRADING,2026-06-08T09:35:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,BABAUSDT,BABA,USDT,stock,US,NYSE,BABA,NYSE:BABA,Alibaba Group Holding Ltd,,1,EQUITY,TRADING,2026-04-20T13:50:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,BBXUSDT,BBX,USDT,stock,US,NYSE,BB,NYSE:BB,BlackBerry Limited,黑莓,1,EQUITY,TRADING,2026-06-01T13:40:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,BEUSDT,BE,USDT,stock,US,NYSE,BE,NYSE:BE,Bloom Energy Corp,,1,EQUITY,TRADING,2026-05-26T13:45:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,BMNRUSDT,BMNR,USDT,stock,US,NYSE,BMNR,NYSE:BMNR,"BITMINE IMMERSION TECHNOLOGIES, INC.",,1,EQUITY,TRADING,2026-06-11T09:15:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,BNCUSDT,BNC,USDT,stock,US,NASDAQ,BNC,NASDAQ:BNC,CEA Industries Inc.,,1,EQUITY,TRADING,2026-07-09T14:25:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,BOTUSDT,BOT,USDT,stock,US,NASDAQ,BOT,NASDAQ:BOT,"RoboStrategy, Inc.",,1,EQUITY,TRADING,2026-07-09T14:00:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,BRKBUSDT,BRKB,USDT,stock,US,NYSE,BRK.B,NYSE:BRK.B,BERKSHIRE HATHAWAY INC,,1,EQUITY,TRADING,2026-05-18T13:50:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,BSPUSDT,BSP,USDT,stock,US,NASDAQ,BSP,NASDAQ:BSP,Bending Spoons S.p.A.,,1,EQUITY,TRADING,2026-07-02T09:50:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,BXUSDT,BX,USDT,stock,US,NYSE,BX,NYSE:BX,Blackstone Inc.,,1,EQUITY,TRADING,2026-06-08T09:00:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,CATUSDT,CAT,USDT,stock,US,NYSE,CAT,NYSE:CAT,CATERPILLAR INC,,1,EQUITY,TRADING,2026-07-02T09:20:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,CBRSUSDT,CBRS,USDT,stock,US,NASDAQ,CBRS,NASDAQ:CBRS,Cerebras Systems Inc.,,1,EQUITY,TRADING,2026-05-19T09:30:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,CIENUSDT,CIEN,USDT,stock,US,NYSE,CIEN,NYSE:CIEN,CIENA CORP,,1,EQUITY,TRADING,2026-06-22T13:50:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,COHRUSDT,COHR,USDT,stock,US,NYSE,COHR,NYSE:COHR,COHERENT CORP.,,1,EQUITY,TRADING,2026-05-26T13:50:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,COINUSDT,COIN,USDT,stock,US,NASDAQ,COIN,NASDAQ:COIN,"Coinbase Global, Inc.",,1,EQUITY,TRADING,2026-02-09T15:00:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,COSTUSDT,COST,USDT,stock,US,NASDAQ,COST,NASDAQ:COST,COSTCO WHOLESALE CORP /NEW,,1,EQUITY,TRADING,2026-06-09T09:05:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,CRCLUSDT,CRCL,USDT,stock,US,NYSE,CRCL,NYSE:CRCL,"Circle Internet Group, Inc.",,1,EQUITY,TRADING,2026-02-09T14:50:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,CRDOUSDT,CRDO,USDT,stock,US,NASDAQ,CRDO,NASDAQ:CRDO,Credo Technology Group Holding Ltd,,1,EQUITY,TRADING,2026-06-08T09:20:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,CRMUSDT,CRM,USDT,stock,US,NYSE,CRM,NYSE:CRM,"Salesforce, Inc.",,1,EQUITY,TRADING,2026-06-03T09:15:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,CRWDUSDT,CRWD,USDT,stock,US,NASDAQ,CRWD,NASDAQ:CRWD,"CrowdStrike Holdings, Inc.",,1,EQUITY,TRADING,2026-06-08T09:15:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,CRWVUSDT,CRWV,USDT,stock,US,NASDAQ,CRWV,NASDAQ:CRWV,"CoreWeave, Inc.",,1,EQUITY,TRADING,2026-05-18T13:30:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,CSCOUSDT,CSCO,USDT,stock,US,NASDAQ,CSCO,NASDAQ:CSCO,"CISCO SYSTEMS, INC.",,1,EQUITY,TRADING,2026-05-15T13:50:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,DELLUSDT,DELL,USDT,stock,US,NYSE,DELL,NYSE:DELL,Dell Technologies Inc.,,1,EQUITY,TRADING,2026-06-03T09:00:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,DISUSDT,DIS,USDT,stock,US,NYSE,DIS,NYSE:DIS,Walt Disney Co,,1,EQUITY,TRADING,2026-05-15T13:40:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,DKNGUSDT,DKNG,USDT,stock,US,NASDAQ,DKNG,NASDAQ:DKNG,DraftKings Inc.,,1,EQUITY,TRADING,2026-06-10T09:05:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,EBAYUSDT,EBAY,USDT,stock,US,NASDAQ,EBAY,NASDAQ:EBAY,EBAY INC,,1,EQUITY,TRADING,2026-06-09T09:20:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,FLEXUSDT,FLEX,USDT,stock,US,NASDAQ,FLEX,NASDAQ:FLEX,FLEX LTD.,,1,EQUITY,TRADING,2026-07-02T09:30:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,FLNCUSDT,FLNC,USDT,stock,US,NASDAQ,FLNC,NASDAQ:FLNC,"Fluence Energy, Inc.",,1,EQUITY,TRADING,2026-05-18T13:55:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,FWDIUSDT,FWDI,USDT,stock,US,NASDAQ,FWDI,NASDAQ:FWDI,"Forward Industries, Inc.",,1,EQUITY,TRADING,2026-07-09T14:30:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,GEVUSDT,GEV,USDT,stock,US,NYSE,GEV,NYSE:GEV,GE Vernova Inc.,,1,EQUITY,TRADING,2026-07-10T08:30:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,GLWUSDT,GLW,USDT,stock,US,NYSE,GLW,NYSE:GLW,CORNING INC /NY,,1,EQUITY,TRADING,2026-06-11T09:30:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,GMEUSDT,GME,USDT,stock,US,NYSE,GME,NYSE:GME,GameStop Corp.,,1,EQUITY,TRADING,2026-06-10T09:15:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,GOOGLUSDT,GOOGL,USDT,stock,US,NASDAQ,GOOGL,NASDAQ:GOOGL,Alphabet Inc.,,1,EQUITY,TRADING,2026-03-26T14:50:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,GSUSDT,GS,USDT,stock,US,NYSE,GS,NYSE:GS,GOLDMAN SACHS GROUP INC,,1,EQUITY,TRADING,2026-07-29T09:05:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,HDUSDT,HD,USDT,stock,US,NYSE,HD,NYSE:HD,"HOME DEPOT, INC.",,1,EQUITY,TRADING,2026-05-15T13:55:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,HIMSUSDT,HIMS,USDT,stock,US,NYSE,HIMS,NYSE:HIMS,"Hims & Hers Health, Inc.",,1,EQUITY,TRADING,2026-06-09T09:15:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,HOODUSDT,HOOD,USDT,stock,US,NASDAQ,HOOD,NASDAQ:HOOD,"Robinhood Markets, Inc.",,1,EQUITY,TRADING,2026-02-02T14:45:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,HPEUSDT,HPE,USDT,stock,US,NYSE,HPE,NYSE:HPE,Hewlett Packard Enterprise Co,,1,EQUITY,TRADING,2026-06-08T09:05:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,IBMUSDT,IBM,USDT,stock,US,NYSE,IBM,NYSE:IBM,INTERNATIONAL BUSINESS MACHINES CORP,,1,EQUITY,TRADING,2026-06-03T09:05:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,INTCUSDT,INTC,USDT,stock,US,NASDAQ,INTC,NASDAQ:INTC,INTEL CORP,,1,EQUITY,TRADING,2026-02-02T14:30:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,IRENUSDT,IREN,USDT,stock,US,NASDAQ,IREN,NASDAQ:IREN,IREN Ltd,,1,EQUITY,TRADING,2026-06-03T09:20:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,JPMUSDT,JPM,USDT,stock,US,NYSE,JPM,NYSE:JPM,JPMORGAN CHASE & CO,,1,EQUITY,TRADING,2026-05-18T13:40:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,KLACUSDT,KLAC,USDT,stock,US,NASDAQ,KLAC,NASDAQ:KLAC,KLA CORP,,1,EQUITY,TRADING,2026-06-22T13:35:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,KOUSDT,KO,USDT,stock,US,NYSE,KO,NYSE:KO,COCA COLA CO,,1,EQUITY,TRADING,2026-08-06T09:00:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,LITEUSDT,LITE,USDT,stock,US,NASDAQ,LITE,NASDAQ:LITE,Lumentum Holdings Inc.,,1,EQUITY,TRADING,2026-05-15T13:30:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,LLYUSDT,LLY,USDT,stock,US,NYSE,LLY,NYSE:LLY,ELI LILLY & Co,,1,EQUITY,TRADING,2026-06-01T13:30:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,LRCXUSDT,LRCX,USDT,stock,US,NASDAQ,LRCX,NASDAQ:LRCX,LAM RESEARCH CORP,,1,EQUITY,TRADING,2026-06-22T13:30:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,METAUSDT,META,USDT,stock,US,NASDAQ,META,NASDAQ:META,"Meta Platforms, Inc.",,1,EQUITY,TRADING,2026-03-26T14:30:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,MRVLUSDT,MRVL,USDT,stock,US,NASDAQ,MRVL,NASDAQ:MRVL,"Marvell Technology, Inc.",,1,EQUITY,TRADING,2026-05-15T14:05:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,MSFTUSDT,MSFT,USDT,stock,US,NASDAQ,MSFT,NASDAQ:MSFT,MICROSOFT CORP,,1,EQUITY,TRADING,2026-04-20T13:30:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,MSTRUSDT,MSTR,USDT,stock,US,NASDAQ,MSTR,NASDAQ:MSTR,Strategy Inc,,1,EQUITY,TRADING,2026-02-09T14:30:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,MUUSDT,MU,USDT,stock,US,NASDAQ,MU,NASDAQ:MU,MICRON TECHNOLOGY INC,,1,EQUITY,TRADING,2026-04-07T13:30:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,NBISUSDT,NBIS,USDT,stock,US,NASDAQ,NBIS,NASDAQ:NBIS,Nebius Group N.V.,,1,EQUITY,TRADING,2026-05-26T13:30:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,NETUSDT,NET,USDT,stock,US,NYSE,NET,NYSE:NET,"Cloudflare, Inc.",,1,EQUITY,TRADING,2026-08-17T13:35:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,NFLXUSDT,NFLX,USDT,stock,US,NASDAQ,NFLX,NASDAQ:NFLX,NETFLIX INC,,1,EQUITY,TRADING,2026-06-09T09:00:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,NOKUSDT,NOK,USDT,stock,US,NYSE,NOK,NYSE:NOK,NOKIA CORP,,1,EQUITY,TRADING,2026-06-01T13:45:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,NOWUSDT,NOW,USDT,stock,US,NYSE,NOW,NYSE:NOW,"ServiceNow, Inc.",,1,EQUITY,TRADING,2026-06-03T09:10:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,NVDAUSDT,NVDA,USDT,stock,US,NASDAQ,NVDA,NASDAQ:NVDA,NVIDIA CORP,,1,EQUITY,TRADING,2026-03-26T14:40:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,NVOUSDT,NVO,USDT,stock,US,NYSE,NVO,NYSE:NVO,NOVO NORDISK A S,,1,EQUITY,TRADING,2026-06-01T13:35:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,ONDSUSDT,ONDS,USDT,stock,US,NASDAQ,ONDS,NASDAQ:ONDS,Ondas Inc.,,1,EQUITY,TRADING,2026-06-03T09:25:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,ORCLUSDT,ORCL,USDT,stock,US,NYSE,ORCL,NYSE:ORCL,ORACLE CORP,,1,EQUITY,TRADING,2026-05-15T13:35:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,PANWUSDT,PANW,USDT,stock,US,NASDAQ,PANW,NASDAQ:PANW,Palo Alto Networks Inc,,1,EQUITY,TRADING,2026-07-21T09:10:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,PAYPUSDT,PAYP,USDT,stock,US,NASDAQ,PAYP,NASDAQ:PAYP,PayPay Corp,,1,EQUITY,TRADING,2026-03-23T14:30:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,PENGUSDT,PENG,USDT,stock,US,NASDAQ,PENG,NASDAQ:PENG,"Penguin Solutions, Inc.",,1,EQUITY,TRADING,2026-07-21T09:15:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,PLTRUSDT,PLTR,USDT,stock,US,NASDAQ,PLTR,NASDAQ:PLTR,Palantir Technologies Inc.,,1,EQUITY,TRADING,2026-02-09T15:10:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,PYPLUSDT,PYPL,USDT,stock,US,NASDAQ,PYPL,NASDAQ:PYPL,"PayPal Holdings, Inc.",,1,EQUITY,TRADING,2026-07-29T09:00:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,QCOMUSDT,QCOM,USDT,stock,US,NASDAQ,QCOM,NASDAQ:QCOM,QUALCOMM INC/DE,,1,EQUITY,TRADING,2026-05-06T13:35:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,QNTXUSDT,QNTX,USDT,stock,US,NASDAQ,QNT,NASDAQ:QNT,Quantinuum Inc.,Quantinuum,1,EQUITY,TRADING,2026-05-29T08:15:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,RDDTUSDT,RDDT,USDT,stock,US,NYSE,RDDT,NYSE:RDDT,"Reddit, Inc.",,1,EQUITY,TRADING,2026-08-06T09:05:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,RIVNUSDT,RIVN,USDT,stock,US,NASDAQ,RIVN,NASDAQ:RIVN,"Rivian Automotive, Inc. / DE",,1,EQUITY,TRADING,2026-06-10T09:10:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,RKLBUSDT,RKLB,USDT,stock,US,NASDAQ,RKLB,NASDAQ:RKLB,Rocket Lab Corp,,1,EQUITY,TRADING,2026-05-18T14:05:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,SHAZUSDT,SHAZ,USDT,stock,US,NASDAQ,SHAZ,NASDAQ:SHAZ,SharonAI Holdings Inc.,,1,EQUITY,TRADING,2026-07-21T09:00:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,SHOPUSDT,SHOP,USDT,stock,US,NASDAQ,SHOP,NASDAQ:SHOP,SHOPIFY INC.,,1,EQUITY,TRADING,2026-08-17T13:45:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,SKHYUSDT,SKHY,USDT,stock,US,NASDAQ,SKHY,NASDAQ:SKHY,SK hynix Inc.,,1,EQUITY,TRADING,2026-07-10T15:50:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,SMCIUSDT,SMCI,USDT,stock,US,NASDAQ,SMCI,NASDAQ:SMCI,"Super Micro Computer, Inc.",,1,EQUITY,TRADING,2026-06-22T13:45:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,SNDKUSDT,SNDK,USDT,stock,US,NASDAQ,SNDK,NASDAQ:SNDK,Sandisk Corp,,1,EQUITY,TRADING,2026-04-07T13:40:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,SNOWUSDT,SNOW,USDT,stock,US,NYSE,SNOW,NYSE:SNOW,Snowflake Inc.,,1,EQUITY,TRADING,2026-07-10T08:40:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,SOFIUSDT,SOFI,USDT,stock,US,NASDAQ,SOFI,NASDAQ:SOFI,"SoFi Technologies, Inc.",,1,EQUITY,TRADING,2026-07-21T09:05:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,SONYUSDT,SONY,USDT,stock,US,NYSE,SONY,NYSE:SONY,Sony Group Corp,,1,EQUITY,TRADING,2026-06-22T14:00:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,SPCXUSD1,SPCX,USD1,stock,US,NASDAQ,SPCX,NASDAQ:SPCX,SpaceX,太空探索技术公司,1,EQUITY,TRADING,2026-07-20T09:00:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,SPCXUSDT,SPCX,USDT,stock,US,NASDAQ,SPCX,NASDAQ:SPCX,SpaceX,太空探索技术公司,1,EQUITY,TRADING,2026-05-21T04:45:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,STRCUSDT,STRC,USDT,stock,US,NASDAQ,STRC,NASDAQ:STRC,Strategy Inc,,1,EQUITY,TRADING,2026-07-02T09:15:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,TERUSDT,TER,USDT,stock,US,NASDAQ,TER,NASDAQ:TER,"TERADYNE, INC",,1,EQUITY,TRADING,2026-07-02T09:35:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,TSLAUSDT,TSLA,USDT,stock,US,NASDAQ,TSLA,NASDAQ:TSLA,"Tesla, Inc.",,1,EQUITY,TRADING,2026-01-28T14:30:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,TSMUSDT,TSM,USDT,stock,US,NYSE,TSM,NYSE:TSM,TAIWAN SEMICONDUCTOR MANUFACTURING CO LTD,,1,EQUITY,TRADING,2026-04-06T14:00:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,TTWOUSDT,TTWO,USDT,stock,US,NASDAQ,TTWO,NASDAQ:TTWO,TAKE TWO INTERACTIVE SOFTWARE INC,,1,EQUITY,TRADING,2026-07-02T09:40:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,TXNUSDT,TXN,USDT,stock,US,NASDAQ,TXN,NASDAQ:TXN,TEXAS INSTRUMENTS INC,,1,EQUITY,TRADING,2026-07-02T09:25:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,UBERUSDT,UBER,USDT,stock,US,NYSE,UBER,NYSE:UBER,"Uber Technologies, Inc",,1,EQUITY,TRADING,2026-05-15T13:45:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,USARUSDT,USAR,USDT,stock,US,NASDAQ,USAR,NASDAQ:USAR,"USA Rare Earth, Inc.",,1,EQUITY,TRADING,2026-05-06T13:40:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,VRTUSDT,VRT,USDT,stock,US,NYSE,VRT,NYSE:VRT,Vertiv Holdings Co,,1,EQUITY,TRADING,2026-07-10T08:35:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,VSTUSDT,VST,USDT,stock,US,NYSE,VST,NYSE:VST,Vistra Corp.,,1,EQUITY,TRADING,2026-08-17T13:40:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,VUSDT,V,USDT,stock,US,NYSE,V,NYSE:V,VISA INC.,,1,EQUITY,TRADING,2026-05-18T13:45:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,WDCUSDT,WDC,USDT,stock,US,NASDAQ,WDC,NASDAQ:WDC,WESTERN DIGITAL CORP,,1,EQUITY,TRADING,2026-05-26T13:35:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,WENUSDT,WEN,USDT,stock,US,NASDAQ,WEN,NASDAQ:WEN,Wendy's Co,,1,EQUITY,TRADING,2026-07-09T14:05:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,WMTUSDT,WMT,USDT,stock,US,NASDAQ,WMT,NASDAQ:WMT,Walmart Inc.,,1,EQUITY,TRADING,2026-05-18T13:35:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo
+binance_futures,ZMUSDT,ZM,USDT,stock,US,NASDAQ,ZM,NASDAQ:ZM,"Zoom Communications, Inc.",,1,EQUITY,TRADING,2026-06-10T09:00:00+00:00,1,https://fapi.binance.com/fapi/v1/exchangeInfo

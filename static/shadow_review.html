@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>影子模型分歧复核</title>
+  <style>
+    :root { color-scheme: dark; font-family: system-ui, sans-serif; }
+    body { max-width: 1100px; margin: 0 auto; padding: 24px; background: #111827; color: #e5e7eb; }
+    header, .actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .card { margin-top: 20px; padding: 22px; border: 1px solid #374151; border-radius: 12px; background: #1f2937; }
+    #text { white-space: pre-wrap; line-height: 1.65; max-height: 360px; overflow: auto; }
+    #companies { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 8px; margin: 18px 0; }
+    label { padding: 8px; border-radius: 7px; background: #111827; }
+    button, select { border: 0; border-radius: 7px; padding: 10px 14px; cursor: pointer; font-weight: 600; }
+    .primary { background: #2563eb; color: white; }
+    .success { background: #059669; color: white; }
+    .danger { background: #dc2626; color: white; }
+    .model { background: #7c3aed; color: white; }
+    .muted { color: #9ca3af; }
+    .rule { color: #93c5fd; }
+    .reason { color: #fbbf24; }
+    .prediction-grid { display: grid; gap: 8px; margin: 14px 0; }
+    .prediction-row { padding: 10px 12px; border-radius: 8px; background: #111827; }
+    .candidate { margin-left: 12px; color: #c4b5fd; font-size: 0.92rem; }
+    progress { width: 260px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>影子模型分歧复核</h1>
+    <progress id="progress" value="0" max="1"></progress>
+    <span id="summary" class="muted">加载中…</span>
+    <button id="reload">刷新队列</button>
+  </header>
+
+  <main class="card" id="card" hidden>
+    <div id="source" class="muted"></div>
+    <p id="reasons" class="reason"></p>
+    <p id="text"></p>
+    <p>上游候选：<span id="upstream" class="muted"></span></p>
+    <div id="predictions" class="prediction-grid"></div>
+    <div id="model-actions" class="actions"></div>
+    <div id="companies"></div>
+    <div class="actions">
+      <button class="success" id="accept-rule">采用规则结果（1）</button>
+      <button class="danger" id="none">不含目标公司（0）</button>
+      <button class="primary" id="save">保存所选（Enter）</button>
+      <select id="confidence" aria-label="标注置信度">
+        <option value="high">高置信度</option>
+        <option value="medium">中置信度</option>
+        <option value="low">低置信度</option>
+      </select>
+      <button id="skip">本轮跳过（S）</button>
+    </div>
+  </main>
+
+  <script>
+    let items = [];
+    let companies = [];
+    let current = null;
+    let summary = {total: 0, reviewed: 0, pending: 0};
+
+    function codesText(codes) {
+      return (codes || []).join(', ') || 'no_match';
+    }
+
+    async function load() {
+      document.querySelector('#summary').textContent = '加载中…';
+      const response = await fetch('/api/review-items?limit=100&unreviewed_only=true');
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const data = await response.json();
+      items = data.items;
+      companies = data.companies;
+      summary = data.summary;
+      renderNext();
+    }
+
+    function updateSummary() {
+      document.querySelector('#progress').max = summary.total || 1;
+      document.querySelector('#progress').value = summary.reviewed;
+      document.querySelector('#summary').textContent =
+        `分歧 ${summary.total} 条，已复核 ${summary.reviewed} 条，待复核 ${summary.pending} 条`;
+    }
+
+    function renderPredictions() {
+      const container = document.querySelector('#predictions');
+      container.replaceChildren();
+
+      const ruleRow = document.createElement('div');
+      ruleRow.className = 'prediction-row rule';
+      ruleRow.textContent = `规则：${codesText(current.predicted_codes)}`;
+      container.appendChild(ruleRow);
+
+      const actionContainer = document.querySelector('#model-actions');
+      actionContainer.replaceChildren();
+      for (const prediction of current.shadow_predictions) {
+        const row = document.createElement('div');
+        row.className = 'prediction-row';
+        const title = document.createElement('div');
+        title.textContent = `${prediction.model_version}：${codesText(prediction.model_codes)}`;
+        row.appendChild(title);
+        for (const candidate of prediction.candidates || []) {
+          const detail = document.createElement('div');
+          detail.className = 'candidate';
+          const score = Number(candidate.model_score || 0).toFixed(4);
+          detail.textContent = `${candidate.canonical_code} · score=${score} · ${candidate.model_predicted ? '保留' : '过滤'}`;
+          row.appendChild(detail);
+        }
+        container.appendChild(row);
+
+        const button = document.createElement('button');
+        button.className = 'model';
+        button.textContent = `采用 ${prediction.model_version}`;
+        button.onclick = () => save(prediction.model_codes);
+        actionContainer.appendChild(button);
+      }
+    }
+
+    function renderCompanies(selectedCodes) {
+      const selected = new Set(selectedCodes || []);
+      const container = document.querySelector('#companies');
+      container.replaceChildren();
+      for (const company of companies) {
+        const label = document.createElement('label');
+        const input = document.createElement('input');
+        input.type = 'checkbox';
+        input.value = company.canonical_code;
+        input.checked = selected.has(company.canonical_code);
+        label.appendChild(input);
+        label.append(` ${company.company_name} · ${company.canonical_code}`);
+        container.appendChild(label);
+      }
+    }
+
+    function setSelectedCodes(codes) {
+      const selected = new Set(codes || []);
+      for (const input of document.querySelectorAll('#companies input')) {
+        input.checked = selected.has(input.value);
+      }
+    }
+
+    function renderNext() {
+      updateSummary();
+      current = items.shift();
+      if (!current) {
+        document.querySelector('#card').hidden = true;
+        if (summary.pending > 0) {
+          load().catch(showError);
+        } else {
+          document.querySelector('#summary').textContent =
+            `当前没有待复核分歧；已复核 ${summary.reviewed} 条。WS 可以继续运行。`;
+        }
+        return;
+      }
+
+      document.querySelector('#card').hidden = false;
+      const sourceLabel = current.source_type === 'news' ? '新闻网站' : current.source_type === 'twitter' ? 'Twitter' : '未知来源';
+      document.querySelector('#source').textContent =
+        `${sourceLabel} · ${current.source_id ? `来源 ID：${current.source_id}` : '无来源 ID'}${current.published_at ? ` · ${current.published_at}` : ''} · 优先级 ${current.priority}`;
+      document.querySelector('#reasons').textContent = current.review_reasons.join('；');
+      document.querySelector('#text').textContent = current.text;
+      document.querySelector('#upstream').textContent = (current.upstream_candidates || [])
+        .map(candidate => `${candidate.stocker_name || '未知'} (${candidate.stocker_code || '无代码'})`)
+        .join('；') || '无';
+      renderPredictions();
+      renderCompanies(current.predicted_codes);
+    }
+
+    function selectedCodes() {
+      return [...document.querySelectorAll('#companies input:checked')].map(input => input.value);
+    }
+
+    async function save(codes) {
+      const response = await fetch('/api/review-annotations', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          record_key: current.record_key,
+          correct_codes: codes,
+          confidence: document.querySelector('#confidence').value
+        })
+      });
+      if (!response.ok) {
+        const error = await response.json();
+        alert(error.detail || '保存失败');
+        return;
+      }
+      summary.reviewed += 1;
+      summary.pending = Math.max(0, summary.pending - 1);
+      renderNext();
+    }
+
+    function showError(error) {
+      document.querySelector('#card').hidden = true;
+      document.querySelector('#summary').textContent = `加载失败：${error}`;
+    }
+
+    document.querySelector('#accept-rule').onclick = () => save(current.predicted_codes);
+    document.querySelector('#none').onclick = () => save([]);
+    document.querySelector('#save').onclick = () => save(selectedCodes());
+    document.querySelector('#skip').onclick = () => {
+      items.push(current);
+      renderNext();
+    };
+    document.querySelector('#reload').onclick = () => load().catch(showError);
+    document.addEventListener('keydown', event => {
+      if (!current) return;
+      if (event.key === '1') save(current.predicted_codes);
+      if (event.key === '0') save([]);
+      if (event.key === 'Enter') save(selectedCodes());
+      if (event.key.toLowerCase() === 's') document.querySelector('#skip').click();
+    });
+
+    load().catch(showError);
+  </script>
+</body>
+</html>

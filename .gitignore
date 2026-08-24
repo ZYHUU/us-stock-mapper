@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+.venv/
+.env
+data/stock_mapper.db
+data/stock_mapper.db-shm
+data/stock_mapper.db-wal
+data/ws_events*.jsonl
+data/annotations.jsonl
+data/training/
+data/snapshots/
+models/

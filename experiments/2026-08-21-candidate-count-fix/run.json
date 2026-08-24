@@ -1,0 +1,30 @@
+{
+  "run_id": "2026-08-21-candidate-count-fix",
+  "model_versions": ["classic-lr-v3", "lightgbm-shadow-v2"],
+  "git_commit": null,
+  "private_snapshot": "training-v3 (best inference from manifest timestamps; this run predates the meta.json/changelog tooling, see note below)",
+  "model_type": ["LogisticRegression", "LightGBM"],
+  "feature_version": "tfidf(word+char)+structured-v1",
+  "thresholds": {
+    "classic-lr-v3": 0.6555152247903872,
+    "lightgbm-shadow-v2": 0.5605722797419419
+  },
+  "changes": [
+    "Fixed a train/serve feature skew in the `candidates_in_message` structured feature: training counted padded pair-rows in candidate_pairs.jsonl (inflated by random_topup/background negative sampling to ~3-4 per message), serving counted the real candidate count from mapper.identify() (often just 1)",
+    "Retrained both classifiers on the same post-fix snapshot and re-ran the frozen test-set evaluation"
+  ],
+  "metrics": {
+    "classic-lr-v3": {"test_precision": 0.873, "test_recall": 0.982, "test_f1": 0.924},
+    "lightgbm-shadow-v2": {"test_precision": 0.937, "test_recall": 0.982, "test_f1": 0.959},
+    "rule_baseline_test_f1": 0.427
+  },
+  "latency": {
+    "note": "see reports/pipeline_latency_lgbm.md and reports/pipeline_latency_lr.md in the private workspace; LightGBM's p99 on multi-candidate messages is close to/over the 100ms budget, which is why it stayed a shadow model instead of going live"
+  },
+  "known_limitations": [
+    "classic-lr-v3 precision (0.873) is below the 98% target used as the production go/no-go bar",
+    "lightgbm-shadow-v2 clears both precision/recall targets on the frozen test set but hasn't cleared the latency bar for multi-candidate messages",
+    "candidate recall itself is capped around 97.5% upstream of these classifiers (see private workspace reports/data_audit.md), independent of this fix"
+  ],
+  "reconstruction_note": "This run predates the meta.json/run.json tooling added later. Numbers here are transcribed from reports/final_test_evaluation.md and code comments in src/semantic_matcher.py in the private workspace, not captured live at training time -- included as the first experiments/ entry precisely to demonstrate why the tooling was added."
+}

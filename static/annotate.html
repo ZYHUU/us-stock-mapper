@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>美股消息标注</title>
+  <style>
+    :root { color-scheme: dark; font-family: system-ui, sans-serif; }
+    body { max-width: 980px; margin: 0 auto; padding: 24px; background: #111827; color: #e5e7eb; }
+    header, .actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .card { margin-top: 20px; padding: 22px; border: 1px solid #374151; border-radius: 12px; background: #1f2937; }
+    #text { white-space: pre-wrap; line-height: 1.65; max-height: 360px; overflow: auto; }
+    #companies { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px; margin: 18px 0; }
+    label { padding: 8px; border-radius: 7px; background: #111827; }
+    button { border: 0; border-radius: 7px; padding: 10px 16px; cursor: pointer; font-weight: 600; }
+    .primary { background: #2563eb; color: white; }
+    .success { background: #059669; color: white; }
+    .danger { background: #dc2626; color: white; }
+    .muted { color: #9ca3af; }
+    .prediction { color: #93c5fd; }
+    progress { width: 260px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>美股消息标注</h1>
+    <progress id="progress" value="0" max="1"></progress>
+    <span id="summary" class="muted">加载中…</span>
+  </header>
+
+  <main class="card" id="card" hidden>
+    <div id="source" class="muted"></div>
+    <p id="text"></p>
+    <p>上游正则候选：<span id="upstream" class="muted"></span></p>
+    <p>当前预测：<span id="prediction" class="prediction"></span></p>
+    <div id="companies"></div>
+    <div class="actions">
+      <button class="success" id="accept">预测正确（1）</button>
+      <button class="danger" id="none">不含当前公司库中的公司（0）</button>
+      <button class="primary" id="save">保存所选（Enter）</button>
+      <button id="skip">跳过（S）</button>
+    </div>
+  </main>
+
+  <script>
+    let items = [];
+    let companies = [];
+    let current = null;
+    let total = 0;
+    let labeled = 0;
+
+    async function load() {
+      const response = await fetch('/api/items?limit=100&unlabeled_only=true');
+      const data = await response.json();
+      items = data.items;
+      companies = data.companies;
+      total = data.summary.total;
+      labeled = data.summary.labeled;
+      renderNext();
+    }
+
+    function renderNext() {
+      current = items.shift();
+      document.querySelector('#progress').max = total || 1;
+      document.querySelector('#progress').value = labeled;
+      document.querySelector('#summary').textContent = `已标注 ${labeled} / ${total}，剩余 ${total - labeled}`;
+      if (!current) {
+        if (labeled < total) {
+          load();
+          return;
+        }
+        document.querySelector('#card').hidden = true;
+        document.querySelector('#summary').textContent = `已完成 ${labeled} 条标注`;
+        return;
+      }
+
+      document.querySelector('#card').hidden = false;
+      const sourceLabel = current.source_type === 'news' ? '新闻网站' : current.source_type === 'twitter' ? 'Twitter' : '未知来源';
+      document.querySelector('#source').textContent = `${sourceLabel} · ${current.source_id ? `来源 ID：${current.source_id}` : '无来源 ID'}${current.published_at ? ` · ${current.published_at}` : ''}`;
+      document.querySelector('#text').textContent = current.text;
+      document.querySelector('#upstream').textContent = (current.upstream_candidates || [])
+        .map(candidate => `${candidate.stocker_name || '未知'} (${candidate.stocker_code || '无代码'}，别名：${(candidate.aliases || []).join('/') || '无'})`)
+        .join('；') || '无';
+      document.querySelector('#prediction').textContent = current.predicted_codes.join(', ') || 'no_match';
+      const selected = new Set(current.predicted_codes);
+      document.querySelector('#companies').innerHTML = companies.map(company => `
+        <label>
+          <input type="checkbox" value="${company.canonical_code}" ${selected.has(company.canonical_code) ? 'checked' : ''}>
+          ${company.company_name} · ${company.canonical_code}
+        </label>
+      `).join('');
+    }
+
+    function selectedCodes() {
+      return [...document.querySelectorAll('#companies input:checked')].map(input => input.value);
+    }
+
+    async function save(codes) {
+      const response = await fetch('/api/annotations', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({record_key: current.record_key, correct_codes: codes})
+      });
+      if (!response.ok) {
+        const error = await response.json();
+        alert(error.detail || '保存失败');
+        return;
+      }
+      labeled += 1;
+      renderNext();
+    }
+
+    document.querySelector('#accept').onclick = () => save(current.predicted_codes);
+    document.querySelector('#none').onclick = () => save([]);
+    document.querySelector('#save').onclick = () => save(selectedCodes());
+    document.querySelector('#skip').onclick = () => {
+      items.push(current);
+      renderNext();
+    };
+    document.addEventListener('keydown', event => {
+      if (!current) return;
+      if (event.key === '1') save(current.predicted_codes);
+      if (event.key === '0') save([]);
+      if (event.key === 'Enter') save(selectedCodes());
+      if (event.key.toLowerCase() === 's') document.querySelector('#skip').click();
+    });
+
+    load().catch(error => {
+      document.querySelector('#summary').textContent = `加载失败：${error}`;
+    });
+  </script>
+</body>
+</html>
