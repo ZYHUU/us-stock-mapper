@@ -19,6 +19,7 @@ from src.train_classic_model import (
     CLASS_WEIGHT_VARIANTS,
     STRUCTURED_FEATURE_NAMES,
     WORD_NGRAM_RANGE,
+    WORD_TOKEN_PATTERN,
     build_structured_matrix,
     evaluate_at_threshold,
     load_pairs,
@@ -82,7 +83,8 @@ def main() -> None:
     val_texts = [pair_text(e) for e in val_examples]
 
     word_vectorizer = TfidfVectorizer(
-        ngram_range=WORD_NGRAM_RANGE, lowercase=True, min_df=2, max_features=20000
+        ngram_range=WORD_NGRAM_RANGE, lowercase=True, min_df=2, max_features=20000,
+        token_pattern=WORD_TOKEN_PATTERN,
     )
     char_vectorizer = TfidfVectorizer(
         analyzer="char", ngram_range=CHAR_NGRAM_RANGE, lowercase=False, min_df=2, max_features=20000

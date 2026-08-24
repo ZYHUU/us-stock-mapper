@@ -209,8 +209,8 @@ python -m uvicorn src.annotation_api:app --port 8001
 ```powershell
 python -m src.create_data_snapshot --name my-snapshot
 python -m src.build_training_dataset --snapshot-name my-snapshot
-python -m src.train_classic_model --snapshot-name my-snapshot --model-version classic-lr-v4
-python -m src.train_lightgbm_model --snapshot-name my-snapshot --model-version lightgbm-shadow-v3
+python -m src.train_classic_model --snapshot-name my-snapshot --model-version classic-lr-v6
+python -m src.train_lightgbm_model --snapshot-name my-snapshot --model-version lightgbm-shadow-v4
 ```
 
 每次训练会在 `models/company_classifier/<variant>/meta.json` 里自动记录训练时间、数据快照名、验证集指标和当时的 git commit。确认某次训练值得发布后，把训练记录整理进 `experiments/<run_id>/`，模型权重打包发布成 GitHub Release，并更新 `MODEL_CHANGELOG.md`。

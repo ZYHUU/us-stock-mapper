@@ -1,0 +1,32 @@
+{
+  "run_id": "2026-08-24-frozen-test-and-privacy-fix",
+  "model_versions": ["classic-lr-v5"],
+  "superseded_versions": ["classic-lr-v4 (trained, never released -- see notes below)"],
+  "private_snapshot": "training-v4",
+  "model_type": ["LogisticRegression"],
+  "feature_version": "tfidf(word+char, fixed CJK tokenization)+structured-v1",
+  "threshold": 0.6804017265908725,
+  "changes": [
+    "Relabeled the annotation backlog (positive-example messages roughly doubled since the previous training round) and rebuilt the frozen train/val/test split from the updated data.",
+    "Permanently froze the test set to the same 754 message ids used by the previous release's split, so this and future model generations are compared on identical held-out data instead of a freshly re-cut test set each round.",
+    "Found and fixed a real train/val/test leakage bug in the split logic: near-duplicate reposted content (the same copy-pasted news story or marketing template reappearing under a different message id) was landing on both sides of the split under the old exact-byte-match dedup. Added near-duplicate clustering (normalized text + rare-word inverted index + similarity confirmation, gated on candidate-code compatibility so same-template-different-company posts aren't wrongly merged) so whole duplicate clusters are assigned to one split.",
+    "Found and fixed a privacy/feature-quality bug during the pre-release check: the word-level TF-IDF vectorizer used scikit-learn's default token pattern, which does not segment Chinese text -- an entire unspaced Chinese sentence was tokenized as a single 'word', so the vocabulary contained near-verbatim fragments of scraped training text. Fixed by restricting the word tokenizer to ASCII words or single CJK characters, leaving Chinese generalization to the (already fine-grained, unaffected) character n-gram vectorizer. Retrained classic-lr-v4 into classic-lr-v5 with this fix; v4 was never released."
+  ],
+  "metrics": {
+    "classic-lr-v3_rescored_on_fixed_split": {"test_precision": 0.868, "test_recall": 0.982, "test_f1": 0.921},
+    "classic-lr-v5": {"test_precision": 0.938, "test_recall": 0.968, "test_f1": 0.953},
+    "rule_baseline_test_f1": 0.424
+  },
+  "pre_release_checks": {
+    "split_leakage_audit": "passed after fix -- normalized-text + rare-word-index + SequenceMatcher scan found zero remaining cross-split near-duplicates above the similarity threshold that weren't legitimate same-template-different-entity content",
+    "privacy_audit": "passed after fix -- scanned word_vectorizer.vocabulary_ for entries >15 chars; the whole-sentence leak class is eliminated; residual long entries are wallet-address-like strings and adjacent-handle bigrams, which are expected/unavoidable content for a bag-of-words model trained on public social media text, not a structural leak",
+    "serving_smoke_test": "passed -- scored synthetic messages through SemanticMatcher.score() (the same code path ws_client.py calls), including a known false-positive collision case (\"NOW\" as an emphatic adverb), which was correctly rejected",
+    "latency_test": "passed -- multi-candidate p99 well under the 100ms budget",
+    "rollback_drill": "passed -- the previous production model (archived separately) was loaded and scored standalone through the same serving code path to confirm a rollback is a simple file-swap"
+  },
+  "known_limitations": [
+    "classic-lr-v5 precision (0.938) is below the project's 98% long-term target; the project decided 98% is an ongoing optimization goal, not a release gate for v0.1.0",
+    "candidate recall itself is capped around 97.5% upstream of this classifier (rule-layer recall), independent of this fix",
+    "word-vectorizer vocabulary still contains short tokens drawn from public social-media text (usernames, wallet-address-like strings) -- inherent to any bag-of-words model trained on real text, disclosed in the model card rather than treated as a fixable bug"
+  ]
+}

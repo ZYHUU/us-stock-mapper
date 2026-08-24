@@ -18,16 +18,39 @@ MODEL_ROOT = PROJECT_ROOT / "models" / "company_classifier"
 # （训练时数了填充的负样本，线上却数真实候选数），已在这一轮修复并重新训练+
 # 重新做过一次冻结测试集确认。下面是修复后的阈值。
 
-# LR：当前线上基线 + 回退方案。所有场景的端到端延迟都稳定在100ms预算内
-# （见 reports/pipeline_latency.md）。修复bug后测试集真实Precision比之前误报的数字更低，
-# 离98%目标还有距离。
-LR_MODEL_PATH = MODEL_ROOT / "tfidf_structured__balanced" / "model.joblib"
-LR_THRESHOLD = 0.6555152247903872
-LR_MODEL_VERSION = "classic-lr-v3"
+# 2026-08-24：用 training-v4 快照（标注积压清空后，正样本消息从约1484条涨到
+# 2162条）重新训练。冻结测试集沿用 training-v3 切分出的那754条消息id
+# （见 data/frozen_test_message_ids.json），新旧模型在同一份测试集上比较，
+# 且这次切分逻辑修了一个真实存在的近重复内容跨集合泄漏问题（同一条转发/
+# 复制粘贴文案换个消息id出现在训练集又出现在测试集，见
+# src/build_training_dataset.py 的 find_duplicate_clusters）——先发现泄漏、
+# 修好去重逻辑、重新切分训练，之前一版带泄漏的指标已经作废。
 
-# LightGBM：影子模型。修复bug后测试集 F1 依然比 LR 更好（0.959 vs 0.924），
-# 但多候选消息的 p99 延迟接近/可能超出100ms预算，
-# 所以先只在影子运行里观察，不接管正式输出。
+# classic-lr-v4 训出来后做公开发布前的隐私检查，又发现了第二个问题：
+# word_vectorizer 用 sklearn 默认 token_pattern，不切分中文，一整句没有空格的
+# 中文会被当成一个"词"，词表里混进了接近完整句子的原文片段（第三方抓取内容，
+# 公开发布模型文件会把这些片段带出去）。修了 WORD_TOKEN_PATTERN
+# （train_classic_model.py，只匹配 ASCII 单词或单个中文字符，中文泛化信号
+# 交给不受此影响的 char n-gram 承担）后重新训练成 classic-lr-v5，测试集指标
+# 与 v4 基本持平甚至略好（P 0.938、R 0.968、F1 0.953），说明那些整句 token
+# 本来就是过拟合的噪声特征，不是有用信号。v4 从未发布过，不需要单独记录。
+
+# LR：当前线上基线 + 回退方案。v5 相对 v3（上一个正式发布过/线上跑过的版本）
+# 是干净的提升（测试集 Precision 0.868->0.938，Recall 0.982->0.968，
+# F1 0.921->0.953），但 Precision 仍未达到 98% 的长期目标，v0.1.0 按用户
+# 2026-08-24 的决定不以 98% 为硬门槛发布。已过 serving smoke test + 延迟测试
+# + 回滚验证，见 MODEL_CHANGELOG.md。旧版 v3 模型文件归档在
+# models/company_classifier_v_prev_archive/，需要回滚可以直接复制回来。
+LR_MODEL_PATH = MODEL_ROOT / "tfidf_structured__balanced" / "model.joblib"
+LR_THRESHOLD = 0.6804017265908725
+LR_MODEL_VERSION = "classic-lr-v5"
+
+# LightGBM：影子模型。同一批数据训出的 lightgbm-shadow-v3 在冻结测试集上是权衡
+# 而非提升（Precision 0.938->0.906 下降，Recall 0.975->1.000，F1 0.956->0.951
+# 基本打平，且新旧两版 Precision 都没达到98%目标），按 2026-08-24 的决定
+# 不转正，继续用 v2 跑影子观察；v3 的模型文件单独存在
+# models/company_classifier/lgbm_svd_structured__balanced_v3_shadow_experimental/
+# 里，不接管这里的路径。
 LIGHTGBM_MODEL_PATH = MODEL_ROOT / "lgbm_svd_structured__balanced" / "model.joblib"
 LIGHTGBM_THRESHOLD = 0.5605722797419384
 LIGHTGBM_MODEL_VERSION = "lightgbm-shadow-v2"

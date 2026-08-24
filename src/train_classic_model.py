@@ -32,6 +32,12 @@ CONTEXT_KEYWORDS = [
 
 WORD_NGRAM_RANGE = (1, 2)
 CHAR_NGRAM_RANGE = (2, 5)
+# sklearn 默认 token_pattern（r"(?u)\b\w\w+\b"）不切分中文——一整句没有空格的
+# 中文会被 \w+ 当成一个"词"整体吃掉，词表里会出现接近完整句子的原文片段
+# （抓取自第三方社交媒体/新闻的训练数据，公开发布模型文件会把这些片段带出去，
+# 隐私检查时发现，2026-08-24）。改成只匹配 ASCII 单词或单个中文字符，中文的
+# 泛化信号完全交给 char n-gram 承担（char_vectorizer 按字符切，不受此影响）。
+WORD_TOKEN_PATTERN = r"[A-Za-z0-9]+|[一-鿿]"
 CLASS_WEIGHT_VARIANTS = {"balanced": "balanced", "unweighted": None}
 FEATURE_VARIANTS = ("tfidf", "tfidf_structured")
 
@@ -276,7 +282,8 @@ def main() -> None:
         use_structured = feature_variant == "tfidf_structured"
 
         word_vectorizer = TfidfVectorizer(
-            ngram_range=WORD_NGRAM_RANGE, lowercase=True, min_df=2, max_features=20000
+            ngram_range=WORD_NGRAM_RANGE, lowercase=True, min_df=2, max_features=20000,
+            token_pattern=WORD_TOKEN_PATTERN,
         )
         char_vectorizer = TfidfVectorizer(
             analyzer="char", ngram_range=CHAR_NGRAM_RANGE, lowercase=False, min_df=2, max_features=20000
