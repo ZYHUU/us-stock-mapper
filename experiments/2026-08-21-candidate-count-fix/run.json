@@ -23,7 +23,7 @@
   },
   "known_limitations": [
     "classic-lr-v3 precision (0.873) is below the 98% target used as the production go/no-go bar",
-    "lightgbm-shadow-v2 clears both precision/recall targets on the frozen test set but hasn't cleared the latency bar for multi-candidate messages",
+    "lightgbm-shadow-v2 clears the 95% recall target (0.982) but not the 98% precision target (0.937) on the frozen test set, and hasn't cleared the latency bar for multi-candidate messages either",
     "candidate recall itself is capped around 97.5% upstream of these classifiers (see private workspace reports/data_audit.md), independent of this fix"
   ],
   "reconstruction_note": "This run predates the meta.json/run.json tooling added later. Numbers here are transcribed from reports/final_test_evaluation.md and code comments in src/semantic_matcher.py in the private workspace, not captured live at training time -- included as the first experiments/ entry precisely to demonstrate why the tooling was added."

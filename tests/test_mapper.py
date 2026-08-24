@@ -1,9 +1,11 @@
 import unittest
+from contextlib import closing
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from src.annotation_store import load_annotations, record_key, save_annotation
-from src.mapper import default_mapper
+from src.database import PROJECT_ROOT, connect, initialize, utc_now
+from src.mapper import USStockMapper, load_enabled_companies
 from src.message_parser import (
     detect_source_type,
     extract_text,
@@ -12,11 +14,43 @@ from src.message_parser import (
 )
 from src.ws_client import _event_key, _events_from_payload
 
+# 公开仓库不带任何已同步的 securities 数据（那张表由 src/sync_binance_tradfi.py
+# 从币安/SEC 拉取，不进 git）。测试自己的公司列表只靠 data/companies.csv 里的少数
+# 几家覆盖不到 ServiceNow/泡泡玛特/长鑫科技/美光这类"仅存在于 securities 主数据"
+# 的公司，所以这里现造一个临时 SQLite 库、插入测试要用到的这几行，而不是依赖
+# 开发者本地已经同步好的 data/stock_mapper.db。
+_SYNTHETIC_SECURITIES = [
+    ("NYSE:NOW", "stock", "US", "NYSE", "NOW", "ServiceNow, Inc.", ""),
+    ("HKEX:9992", "stock", "HK", "HKEX", "9992", "Pop Mart International", "泡泡玛特"),
+    ("SSE:688825", "stock", "CN", "SSE", "688825", "CXMT Corporation", "长鑫科技"),
+    ("NASDAQ:MU", "stock", "US", "NASDAQ", "MU", "Micron Technology", ""),
+    ("NASDAQ:SPCX", "stock", "US", "NASDAQ", "SPCX", "SpaceX", "太空探索技术公司"),
+]
+
+
+def _build_test_mapper() -> USStockMapper:
+    with TemporaryDirectory() as directory:
+        db_path = Path(directory) / "test_securities.db"
+        initialize(db_path)
+        with closing(connect(db_path)) as connection, connection:
+            for canonical_code, asset_type, market, exchange, ticker, name_en, name_cn in _SYNTHETIC_SECURITIES:
+                connection.execute(
+                    """
+                    INSERT INTO securities (
+                        canonical_code, asset_type, market, exchange, ticker,
+                        name_en, name_cn, mapper_candidate, source_url, updated_at
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, 1, '', ?)
+                    """,
+                    (canonical_code, asset_type, market, exchange, ticker, name_en, name_cn, utc_now()),
+                )
+        companies = load_enabled_companies(PROJECT_ROOT / "data" / "companies.csv", db_path)
+    return USStockMapper(companies)
+
 
 class USStockMapperTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.mapper = default_mapper()
+        cls.mapper = _build_test_mapper()
 
     def codes_for(self, message: str) -> list[str]:
         return [item.canonical_code for item in self.mapper.identify(message)]
@@ -95,14 +129,14 @@ class USStockMapperTest(unittest.TestCase):
 
     def test_ws_event_without_company(self) -> None:
         event = {
-            "id_str": "2090441890583715898",
-            "item_url": "https://twitter.com/grok/status/2090441890583715898",
-            "content": "部分属实但夸大。荷兰部分市政当局可通过特殊补助个案报销。",
-            "title": "部分属实但夸大。荷兰部分市政当局可通过特殊补助个案报销。",
-            "new_full_text": "核实真实性，引用新闻来源",
+            "id_str": "1000000000000000001",
+            "item_url": "https://example.com/status/1000000000000000001",
+            "content": "合成测试消息：今天天气不错，没有提到任何公司。",
+            "title": "合成测试消息：今天天气不错，没有提到任何公司。",
+            "new_full_text": "synthetic test message with no company mention",
         }
         result = identify_event(event, self.mapper)
-        self.assertEqual(result["source_id"], "2090441890583715898")
+        self.assertEqual(result["source_id"], "1000000000000000001")
         self.assertEqual(result["status"], "no_match")
         self.assertEqual(result["companies"], [])
 
@@ -131,11 +165,11 @@ class USStockMapperTest(unittest.TestCase):
 
     def test_news_website_event_is_normalized(self) -> None:
         event = {
-            "id": 4766112,
+            "id": 1,
             "source_type": "news",
-            "content_cn": "Injective 推出了与 SpaceX 私营公司股份相关的市场。",
-            "content_url": "https://www.odaily.news/zh-CN/newsflash/511584",
-            "create_time": "2026-08-21 14:43:21",
+            "content_cn": "合成测试新闻：某平台上线了与 SpaceX 相关的合成资产市场。",
+            "content_url": "https://example.com/newsflash/1",
+            "create_time": "2026-01-01 00:00:00",
             "stocks": [
                 {
                     "stocker_id": 7580,
@@ -148,10 +182,10 @@ class USStockMapperTest(unittest.TestCase):
         }
         result = identify_event(event, self.mapper)
         self.assertEqual(detect_source_type(event), "news")
-        self.assertEqual(result["source_id"], "4766112")
+        self.assertEqual(result["source_id"], "1")
         self.assertEqual(result["source_type"], "news")
         self.assertEqual(result["source_url"], event["content_url"])
-        self.assertEqual(result["published_at"], "2026-08-21 14:43:21")
+        self.assertEqual(result["published_at"], "2026-01-01 00:00:00")
         self.assertEqual(result["status"], "matched")
         self.assertEqual(
             [company["canonical_code"] for company in result["companies"]],
@@ -174,13 +208,13 @@ class USStockMapperTest(unittest.TestCase):
     def test_ws_event_key_prefers_source_id(self) -> None:
         self.assertEqual(_event_key({"id_str": "123", "content": "消息"}), "id:123")
 
-    def test_companies_discovered_from_ws_samples(self) -> None:
+    def test_additional_company_aliases(self) -> None:
         self.assertEqual(
-            self.codes_for("万豪酒店集团旗下 Marriott Explore 员工价格"),
+            self.codes_for("合成测试：万豪酒店集团公布新一季度入住率数据"),
             ["NASDAQ:MAR"],
         )
         self.assertEqual(
-            self.codes_for("花旗集团董事长兼 CEO Jane Fraser"),
+            self.codes_for("合成测试：花旗集团公布新一季度财报"),
             ["NYSE:C"],
         )
 
