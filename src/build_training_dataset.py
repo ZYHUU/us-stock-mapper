@@ -20,6 +20,11 @@ from src.audit_training_data import (
 )
 from src.database import PROJECT_ROOT
 from src.mapper import Company, USStockMapper, load_enabled_companies
+from src.text_sanitize import (
+    build_handle_to_company_name,
+    collect_numeric_tickers,
+    sanitize_message_text,
+)
 
 DEFAULT_SNAPSHOT_ROOT = PROJECT_ROOT / "data" / "snapshots"
 DEFAULT_OUTPUT_DIR = PROJECT_ROOT / "data" / "training"
@@ -137,6 +142,15 @@ def build_pairs(
         rng.shuffle(pool)
         candidate_labels_by_message[message_id][pool[0]] = (0, "background")
 
+    # 脱敏只发生在这里——喂给分类器（TF-IDF/结构化特征）的文本。上面的候选召回
+    # （mapper.identify）全程用的是未脱敏的 m.text，脱敏不能影响规则候选生成。
+    handle_to_company_name = build_handle_to_company_name(companies)
+    numeric_tickers = collect_numeric_tickers(companies)
+    sanitized_text_by_message: dict[int, str] = {
+        m.message_id: sanitize_message_text(m.text, handle_to_company_name, numeric_tickers)
+        for m in messages
+    }
+
     records: list[PairRecord] = []
     for m in messages:
         for code, (label, negative_type) in candidate_labels_by_message[m.message_id].items():
@@ -146,7 +160,7 @@ def build_pairs(
                     message_id=m.message_id,
                     source_id=m.source_id,
                     source_type=m.source_type,
-                    message_text=m.text,
+                    message_text=sanitized_text_by_message[m.message_id],
                     candidate_code=code,
                     candidate_profile=build_candidate_profile(company),
                     label=label,

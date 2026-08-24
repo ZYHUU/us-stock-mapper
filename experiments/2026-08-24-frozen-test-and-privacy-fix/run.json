@@ -1,32 +1,39 @@
 {
   "run_id": "2026-08-24-frozen-test-and-privacy-fix",
-  "model_versions": ["classic-lr-v5"],
-  "superseded_versions": ["classic-lr-v4 (trained, never released -- see notes below)"],
+  "model_versions": ["classic-lr-v6"],
+  "superseded_versions": [
+    "classic-lr-v4 (trained, never released -- test/val leak, see notes)",
+    "classic-lr-v5 (trained, never released -- word-tokenizer privacy issue, see notes)"
+  ],
   "private_snapshot": "training-v4",
   "model_type": ["LogisticRegression"],
-  "feature_version": "tfidf(word+char, fixed CJK tokenization)+structured-v1",
-  "threshold": 0.6804017265908725,
+  "feature_version": "tfidf(word+char, fixed CJK tokenization)+structured-v1+sanitized-input-text",
+  "threshold": 0.6396499931454203,
   "changes": [
     "Relabeled the annotation backlog (positive-example messages roughly doubled since the previous training round) and rebuilt the frozen train/val/test split from the updated data.",
     "Permanently froze the test set to the same 754 message ids used by the previous release's split, so this and future model generations are compared on identical held-out data instead of a freshly re-cut test set each round.",
     "Found and fixed a real train/val/test leakage bug in the split logic: near-duplicate reposted content (the same copy-pasted news story or marketing template reappearing under a different message id) was landing on both sides of the split under the old exact-byte-match dedup. Added near-duplicate clustering (normalized text + rare-word inverted index + similarity confirmation, gated on candidate-code compatibility so same-template-different-company posts aren't wrongly merged) so whole duplicate clusters are assigned to one split.",
-    "Found and fixed a privacy/feature-quality bug during the pre-release check: the word-level TF-IDF vectorizer used scikit-learn's default token pattern, which does not segment Chinese text -- an entire unspaced Chinese sentence was tokenized as a single 'word', so the vocabulary contained near-verbatim fragments of scraped training text. Fixed by restricting the word tokenizer to ASCII words or single CJK characters, leaving Chinese generalization to the (already fine-grained, unaffected) character n-gram vectorizer. Retrained classic-lr-v4 into classic-lr-v5 with this fix; v4 was never released."
+    "Found and fixed a privacy/feature-quality bug during the pre-release check: the word-level TF-IDF vectorizer used scikit-learn's default token pattern, which does not segment Chinese text -- an entire unspaced Chinese sentence was tokenized as a single 'word', so the vocabulary contained near-verbatim fragments of scraped training text. Fixed by restricting the word tokenizer to ASCII words or single CJK characters. Retrained classic-lr-v4 into classic-lr-v5 with this fix; v5 numbers looked clean at the time but v5 itself was never released.",
+    "A second, more thorough pre-release privacy audit (requested explicitly, rejecting a 'public source' justification) found that the vocabulary still contained real Twitter usernames verbatim (e.g. a bigram from real handles tagged in a mass-mention message) -- short tokens/bigrams that are unavoidable for any bag-of-words model unless the input text itself is sanitized first. Added src/text_sanitize.py (sanitize_message_text()), used identically at training time (build_training_dataset.py, when candidate_pairs.jsonl is written) and at serving time (semantic_matcher.py, SemanticMatcher.score()): URLs/emails/long numeric IDs are replaced with placeholders; @handles are redacted to a generic placeholder unless they exactly match a registered company ticker/alias/brand, in which case they are replaced with the company name (this also incidentally mitigates a known handle-substring false-positive class, e.g. @Tesla_Teslaway no longer leaks the literal fan-account string into the vocabulary). Retrained into classic-lr-v6, which is what's actually shipped as v0.1.0."
   ],
   "metrics": {
     "classic-lr-v3_rescored_on_fixed_split": {"test_precision": 0.868, "test_recall": 0.982, "test_f1": 0.921},
-    "classic-lr-v5": {"test_precision": 0.938, "test_recall": 0.968, "test_f1": 0.953},
+    "classic-lr-v5_never_released": {"test_precision": 0.938, "test_recall": 0.968, "test_f1": 0.953},
+    "classic-lr-v6_shipped": {"test_precision": 0.907, "test_recall": 0.975, "test_f1": 0.940},
     "rule_baseline_test_f1": 0.424
   },
   "pre_release_checks": {
     "split_leakage_audit": "passed after fix -- normalized-text + rare-word-index + SequenceMatcher scan found zero remaining cross-split near-duplicates above the similarity threshold that weren't legitimate same-template-different-entity content",
-    "privacy_audit": "passed after fix -- scanned word_vectorizer.vocabulary_ for entries >15 chars; the whole-sentence leak class is eliminated; residual long entries are wallet-address-like strings and adjacent-handle bigrams, which are expected/unavoidable content for a bag-of-words model trained on public social media text, not a structural leak",
-    "serving_smoke_test": "passed -- scored synthetic messages through SemanticMatcher.score() (the same code path ws_client.py calls), including a known false-positive collision case (\"NOW\" as an emphatic adverb), which was correctly rejected",
+    "privacy_audit_round_1": "found a whole-sentence CJK tokenization leak, fixed (classic-lr-v4 -> v5)",
+    "privacy_audit_round_2": "found real Twitter usernames surviving as short vocabulary tokens/bigrams even after round 1's fix; the 'this is inherent to bag-of-words models trained on public text' rationale was explicitly rejected as insufficient -- fixed by sanitizing input text before feature extraction (classic-lr-v5 -> v6), verified zero known-handle leaks, zero CJK sentence leaks, zero URLs, zero emails in the final vocabulary scan",
+    "serving_smoke_test": "passed -- scored synthetic messages through SemanticMatcher.score() (the same code path ws_client.py calls), including a known false-positive collision case (\"NOW\" as an emphatic adverb) and the @Tesla_Teslaway handle-substring collision case, both correctly rejected",
     "latency_test": "passed -- multi-candidate p99 well under the 100ms budget",
     "rollback_drill": "passed -- the previous production model (archived separately) was loaded and scored standalone through the same serving code path to confirm a rollback is a simple file-swap"
   },
   "known_limitations": [
-    "classic-lr-v5 precision (0.938) is below the project's 98% long-term target; the project decided 98% is an ongoing optimization goal, not a release gate for v0.1.0",
+    "classic-lr-v6 precision (0.907) is below the project's 98% long-term target; the project decided 98% is an ongoing optimization goal, not a release gate for v0.1.0",
     "candidate recall itself is capped around 97.5% upstream of this classifier (rule-layer recall), independent of this fix",
-    "word-vectorizer vocabulary still contains short tokens drawn from public social-media text (usernames, wallet-address-like strings) -- inherent to any bag-of-words model trained on real text, disclosed in the model card rather than treated as a fixable bug"
+    "sanitizing input text cost real precision versus the unreleased v5 (0.938 -> 0.907) -- the model had been partly relying on memorized literal handle strings (e.g. recognizing a specific fan-account handle as a negative signal) that the privacy fix removes; this is disclosed as the real cost of the fix, not framed as a wash",
+    "the @handle allowlist is exact-string matching against the company registry, not semantic understanding -- a genuine official account not present in the registry will be redacted like any other handle, and a handle that merely contains a company name as a substring (not an exact match) is correctly redacted rather than mapped to the company name"
   ]
 }

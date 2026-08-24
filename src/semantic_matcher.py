@@ -10,6 +10,11 @@ from scipy.sparse import csr_matrix, hstack
 from src.build_training_dataset import build_candidate_profile
 from src.database import PROJECT_ROOT
 from src.mapper import Company, Match
+from src.text_sanitize import (
+    build_handle_to_company_name,
+    collect_numeric_tickers,
+    sanitize_message_text,
+)
 from src.train_classic_model import PairExample, extract_structured_features
 
 MODEL_ROOT = PROJECT_ROOT / "models" / "company_classifier"
@@ -32,18 +37,31 @@ MODEL_ROOT = PROJECT_ROOT / "models" / "company_classifier"
 # 公开发布模型文件会把这些片段带出去）。修了 WORD_TOKEN_PATTERN
 # （train_classic_model.py，只匹配 ASCII 单词或单个中文字符，中文泛化信号
 # 交给不受此影响的 char n-gram 承担）后重新训练成 classic-lr-v5，测试集指标
-# 与 v4 基本持平甚至略好（P 0.938、R 0.968、F1 0.953），说明那些整句 token
-# 本来就是过拟合的噪声特征，不是有用信号。v4 从未发布过，不需要单独记录。
+# 与 v4 基本持平甚至略好。v4 从未发布过，不需要单独记录。
 
-# LR：当前线上基线 + 回退方案。v5 相对 v3（上一个正式发布过/线上跑过的版本）
-# 是干净的提升（测试集 Precision 0.868->0.938，Recall 0.982->0.968，
-# F1 0.921->0.953），但 Precision 仍未达到 98% 的长期目标，v0.1.0 按用户
+# classic-lr-v5 又在更彻底的隐私复查中发现残留问题：词表里还留着真实 Twitter
+# 用户名片段（比如某条群体艾特消息里的真实用户名 bigram）——虽然来自公开推文，
+# 但可识别到具体个人，用户 2026-08-24 明确要求不接受"公开来源"这个理由，必须
+# 在特征提取前统一脱敏。新增 src/text_sanitize.py（sanitize_message_text()），
+# 训练（build_training_dataset.py 落盘 candidate_pairs.jsonl 时）和线上
+# （这个文件的 SemanticMatcher.score()）共用同一个函数，替换 URL/邮箱/长数字ID
+# 为占位符，@handle 精确匹配官方账号白名单时换成公司名（保留信号），否则换成
+# 通用 [HANDLE] 占位符（这也顺带缓解了 @Tesla_Teslaway 这类 handle 子串误判，
+# 见项目记忆 project_annotation_false_positive_patterns.md）。重训成
+# classic-lr-v6：测试集 Precision 比 v5 低（0.938->0.907，脱敏拿掉了模型原来
+# 靠死记硬背特定 handle 字符串学到的一部分信号），但仍然明确好于 v3
+# （0.868->0.907，F1 0.921->0.940）。词表复查确认零残留（URL/邮箱/CJK整句/
+# 已知真实handle 全部为0），只保留了合法信号（真实数字股票代码、@X 这类平台名）。
+
+# LR：当前线上基线 + 回退方案。v6 相对 v3（上一个正式发布过/线上跑过的版本）
+# 是干净的提升（测试集 Precision 0.868->0.907，Recall 0.982->0.975，
+# F1 0.921->0.940），但 Precision 仍未达到 98% 的长期目标，v0.1.0 按用户
 # 2026-08-24 的决定不以 98% 为硬门槛发布。已过 serving smoke test + 延迟测试
-# + 回滚验证，见 MODEL_CHANGELOG.md。旧版 v3 模型文件归档在
+# + 回滚验证 + 隐私复查，见 MODEL_CHANGELOG.md。旧版 v3 模型文件归档在
 # models/company_classifier_v_prev_archive/，需要回滚可以直接复制回来。
 LR_MODEL_PATH = MODEL_ROOT / "tfidf_structured__balanced" / "model.joblib"
-LR_THRESHOLD = 0.6804017265908725
-LR_MODEL_VERSION = "classic-lr-v5"
+LR_THRESHOLD = 0.6396499931454203
+LR_MODEL_VERSION = "classic-lr-v6"
 
 # LightGBM：影子模型。同一批数据训出的 lightgbm-shadow-v3 在冻结测试集上是权衡
 # 而非提升（Precision 0.938->0.906 下降，Recall 0.975->1.000，F1 0.956->0.951
@@ -119,17 +137,24 @@ class SemanticMatcher:
             {match.canonical_code for match in matches} | (upstream_codes or set())
         )
 
+        # 喂给分类器的文本要脱敏（URL/邮箱/@handle/长数字ID），跟
+        # build_training_dataset.py 训练时用的是同一个 sanitize_message_text()——
+        # 候选召回（传进来的 matches）已经用未脱敏的原文算好了，这里脱敏不影响候选。
+        handle_to_company_name = build_handle_to_company_name(code_to_company.values())
+        numeric_tickers = collect_numeric_tickers(code_to_company.values())
+        sanitized_text = sanitize_message_text(text, handle_to_company_name, numeric_tickers)
+
         pair_texts: list[str] = []
         structured_rows: list[list[float]] = []
         for match in matches:
             company = code_to_company[match.canonical_code]
             profile = build_candidate_profile(company)
-            pair_texts.append(f"{text}\n[CANDIDATE]\n{profile}")
+            pair_texts.append(f"{sanitized_text}\n[CANDIDATE]\n{profile}")
             if self.use_structured:
                 example = PairExample(
                     message_id=0,
                     source_type=source_type,
-                    message_text=text,
+                    message_text=sanitized_text,
                     candidate_code=match.canonical_code,
                     candidate_profile=profile,
                     label=0,
