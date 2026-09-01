@@ -218,6 +218,26 @@ class USStockMapperTest(unittest.TestCase):
             ["NYSE:C"],
         )
 
+    def test_crwd_bare_company_name(self) -> None:
+        # 合成测试：候选层修复前，公司库只注册了securities主数据里的全称
+        # "CrowdStrike Holdings, Inc."，裸公司名"CrowdStrike"/"Crowdstrike"
+        # 召不到候选（v0.1.1修复）。
+        self.assertEqual(
+            self.codes_for("合成测试：分析师将CrowdStrike目标价上调至210美元。"),
+            ["NASDAQ:CRWD"],
+        )
+        self.assertEqual(
+            self.codes_for("合成测试：Crowdstrike美股盘前上涨，因公司上调年度收入预期。"),
+            ["NASDAQ:CRWD"],
+        )
+        self.assertEqual(
+            self.codes_for(
+                "合成测试：CrowdStrike公布最新财报，营收同比增长。"
+                "全球网络安全行业持续关注CrowdStrike的市场份额变化。"
+            ),
+            ["NASDAQ:CRWD"],
+        )
+
     def test_generic_product_words_do_not_match(self) -> None:
         self.assertEqual(self.codes_for("The Office was a popular TV show"), [])
         self.assertEqual(self.codes_for("This is the core design principle"), [])

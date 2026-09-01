@@ -1,0 +1,75 @@
+{
+  "run_id": "2026-09-01-crwd-candidate-recall-fix",
+  "release_version": "v0.1.1",
+  "model_versions": ["classic-lr-v6"],
+  "model_changed": false,
+  "candidate_layer_change": "data/companies.csv: added one row (crowdstrike,CrowdStrike,NASDAQ,CRWD,CrowdStrike,,)",
+  "changes": [
+    "Fixed a candidate-layer (rule-layer) recall gap for CrowdStrike (NASDAQ:CRWD): the company registry previously only carried the automatically-generated full legal name (\"CrowdStrike Holdings, Inc.\") from the securities master data, not the bare company name (\"CrowdStrike\"/\"Crowdstrike\") that appears far more often in real text -- messages using the bare name never generated a candidate at all, so the classifier never had a chance to score them.",
+    "This was one item in a broader internal 5-company candidate-layer fix attempt (CrowdStrike, Nebius, Marvell, JPMorgan, Alibaba). Only CrowdStrike survived the project's evaluation discipline (frozen data, independent double-blind labeling with arbitration, pre-registered statistical gates with bootstrap confidence intervals, not just point estimates). The other four are documented below as explicitly rejected/deferred for this release, not silently dropped."
+  ],
+  "targeted_test_metrics": {
+    "scope": "NASDAQ:CRWD only, same classifier both sides, candidate-layer config swapped",
+    "pre_fix": {"precision": 0.805, "recall": 0.786},
+    "post_fix": {"precision": 0.837, "recall": 0.976},
+    "delta": {"precision_pp": 3.18, "recall_pp": 19.0},
+    "bootstrap_ci": {
+      "method": "paired resampling by message, 5000 draws, one-sided 95%",
+      "precision_delta_lower_bound_pp": 1.11,
+      "precision_margin_pp": -2.0,
+      "precision_gate": "pass (non-inferiority)",
+      "recall_delta_lower_bound_pp": 9.52,
+      "recall_gate": "pass (superiority, lower bound > 0)"
+    }
+  },
+  "deployment_observation": {
+    "sample_size": 8007,
+    "sample_size_target": 1000,
+    "confirmed_genuine_crwd_cases": 11,
+    "confirmed_genuine_crwd_cases_target": 10,
+    "false_triggers_on_non_crowdstrike_text": 0,
+    "other_company_candidate_output_changes": 0,
+    "other_company_diff_method": "same text replayed through pre-fix and post-fix candidate-layer snapshots, diffed directly -- not compared against a possibly-stale database history field",
+    "process_incidents": 0,
+    "all_five_conditions_met": true,
+    "graduated_from_observation_to_stable": true
+  },
+  "rejected_or_deferred_items": {
+    "NASDAQ:NBIS": {
+      "status": "rejected_this_release",
+      "recall_delta_pp": 11.7,
+      "precision_delta_pp": -2.18,
+      "precision_ci_lower_bound_pp": -5.70,
+      "precision_margin_pp": -2.0,
+      "reason": "Real, statistically-confirmed precision regression (CI lower bound well past the -2pp non-inferiority margin, not sample noise). Root cause: the bare word \"Nebius\" is used far more casually/decoratively in social text than the ticker or full company name, producing genuine false positives (personal banter, undifferentiated multi-ticker lists, repeated boilerplate) that the ticker-only matching never had."
+    },
+    "NASDAQ:MRVL": {
+      "status": "insufficient_evidence",
+      "recall_delta_pp": 4.9,
+      "recall_ci_lower_bound_pp": 0.0,
+      "reason": "Recall point estimate positive but confidence interval lower bound did not clear 0 -- direction is right, statistical strength is not yet there at the tested sample size."
+    },
+    "NYSE:BABA": {
+      "status": "insufficient_evidence",
+      "recall_delta_pp": 4.17,
+      "recall_ci_lower_bound_pp": 0.0,
+      "reason": "Same pattern as Marvell: positive point estimate, confidence interval lower bound did not clear 0."
+    },
+    "NYSE:JPM": {
+      "status": "not_applicable_ceiling_effect",
+      "recall_delta_pp": 0.0,
+      "reason": "Pre-fix baseline recall was already 100% on the tested sample -- no headroom for the recall-improvement gate to fire. Not evidence the fix lacks value, just that this test sample had no missed cases to recover."
+    }
+  },
+  "pre_release_checks": {
+    "config_diff_audit": "passed -- diffed the candidate-layer config against the pre-fix baseline, confirmed the only change is the single new CrowdStrike row",
+    "sha256_manifest": "recorded before and after, matches the deployed file",
+    "regression_tests": "passed -- 3 new CrowdStrike tests in tests/test_mapper.py flip from failing (pre-fix) to passing (post-fix); full existing suite unaffected",
+    "small_scale_deployment_observation": "passed -- see deployment_observation above, all 5 pre-registered conditions met",
+    "rollback_drill": "rollback restores the pre-fix candidate-layer config; verification is that the 3 new regression tests flip back to failing, confirming the rollback took effect"
+  },
+  "known_limitations": [
+    "This release does not change the classifier (classic-lr-v6 unchanged) -- it only affects candidate generation for one company.",
+    "Nebius/Marvell/JPMorgan/Alibaba candidate-layer fixes remain on the internal backlog; any future release covering them requires fresh data and an independently re-run acceptance protocol, not a reuse of this round's evaluation data."
+  ]
+}
